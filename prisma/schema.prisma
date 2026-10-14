@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         String    @default("ADMIN") // "SUPER_ADMIN" | "ADMIN"
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String?
+  bannerImage  String?
+  displayOrder Int      @default(0)
+  isFeatured   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Product {
+  id                 String              @id @default(cuid())
+  slug               String              @unique
+  sku                String              @unique
+  title              String
+  subtitle           String?
+  categorySlug       String
+  collection         String              @default("silver-collection")
+  material           String
+  availableMaterials String              @default("[]") // JSON array string
+  price              Float
+  compareAtPrice     Float?
+  status             String              @default("ACTIVE") // "DRAFT" | "ACTIVE" | "ARCHIVED"
+  isFeatured         Boolean             @default(false)
+  isBestSeller       Boolean             @default(false)
+  isNew              Boolean             @default(false)
+  stockQuantity      Int                 @default(10)
+  lowStockThreshold  Int                 @default(3)
+  rating             Float               @default(5.0)
+  reviewCount        Int                 @default(0)
+  description        String
+  story              String?
+  grossWeight        String?
+  hallmark           String?
+  dimensions         String?
+  gemstones          String?
+  closureType        String?
+  sizes              String              @default("[]") // JSON array string
+  tags               String              @default("[]") // JSON array string
+  seoTitle           String?
+  seoDescription     String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  images             ProductImage[]
+  variants           ProductVariant[]
+  inventoryMovements InventoryMovement[]
+  orderItems         OrderItem[]
+}
+
+model ProductImage {
+  id           String   @id @default(cuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url          String
+  altText      String?
+  displayOrder Int      @default(0)
+  isHoverImage Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([productId])
+}
+
+model ProductVariant {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String
+  material      String?
+  size          String?
+  sku           String?
+  stockQuantity Int      @default(5)
+  priceModifier Float    @default(0.0)
+  createdAt     DateTime @default(now())
+
+  @@index([productId])
+}
+
+model InventoryMovement {
+  id             String   @id @default(cuid())
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId      String?
+  quantityDelta  Int
+  newBalance     Int
+  reason         String   // "INITIAL_STOCK", "MANUAL_ADJUSTMENT", "PURCHASE_RECEIPT", "CUSTOMER_ORDER", "DAMAGED_RETURN", "AUDIT_CORRECTION"
+  note           String?
+  adminUserEmail String?
+  createdAt      DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Order {
+  id                String      @id
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  shippingAddress   String
+  shippingApartment String?
+  shippingCity      String
+  shippingState     String
+  shippingPincode   String
+  shippingMethod    String      @default("standard")
+  shippingCost      Float       @default(0.0)
+  paymentMethod     String      @default("upi")
+  paymentStatus     String      @default("PENDING") // "PENDING", "AUTHORIZED", "PAID", "REFUNDED"
+  orderStatus       String      @default("CONFIRMED") // "PENDING", "CONFIRMED", "QC_HALLMARKING", "DISPATCHED", "DELIVERED", "CANCELLED"
+  subtotal          Float
+  discountAmount    Float       @default(0.0)
+  taxAmount         Float       @default(0.0)
+  totalAmount       Float
+  appliedPromo      String?
+  trackingNumber    String?
+  adminNotes        String?
+  giftNote          String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  items             OrderItem[]
+}
+
+model OrderItem {
+  id               String   @id @default(cuid())
+  orderId          String
+  order            Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId        String?
+  product          Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productTitle     String
+  selectedMaterial String
+  selectedSize     String?
+  unitPrice        Float
+  quantity         Int
+  totalPrice       Float
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model StoreSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String   @default("general")
+  updatedAt DateTime @updatedAt
+}
