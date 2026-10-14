@@ -89,9 +89,9 @@ export default function ContactPage() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#A68A5D] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-stone-900">Showroom Address (Placeholder):</p>
+                  <p className="font-semibold text-stone-900">Boutique Atelier:</p>
                   <p className="text-stone-600 mt-0.5 leading-relaxed">
-                    Valchandson Jewellers Flagship, M.I. Road, Heritage Quarter, Jaipur, Rajasthan 302001
+                    Guru Vidya Building 07, Hill Rd, Santosh Nagar, Bandra West, Mumbai, Maharashtra 400050
                   </p>
                 </div>
               </div>
@@ -111,7 +111,12 @@ export default function ContactPage() {
                 <Phone className="w-5 h-5 text-[#A68A5D] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-stone-900">Telephone Assistance:</p>
-                  <p className="text-stone-600 mt-0.5 font-mono">+91 (0) 141 256 8900</p>
+                  <a
+                    href="tel:09833522819"
+                    className="text-stone-600 hover:text-stone-900 mt-0.5 block font-mono hover:underline"
+                  >
+                    098335 22819
+                  </a>
                 </div>
               </div>
 
@@ -119,7 +124,12 @@ export default function ContactPage() {
                 <Mail className="w-5 h-5 text-[#A68A5D] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-stone-900">Electronic Correspondence:</p>
-                  <p className="text-stone-600 mt-0.5">atelier@valchandsonjewellers.com</p>
+                  <a
+                    href="mailto:akashzewar@gmail.com"
+                    className="text-stone-600 hover:text-stone-900 mt-0.5 block hover:underline"
+                  >
+                    akashzewar@gmail.com
+                  </a>
                 </div>
               </div>
             </div>
@@ -127,7 +137,7 @@ export default function ContactPage() {
             {/* Direct WhatsApp Callout */}
             <div className="pt-4 border-t border-[#E8E2D8]">
               <a
-                href="https://wa.me/919829012345?text=Hello%20Valchandson%20Jewellers,%20I%20would%20like%20to%20schedule%20a%20private%20bridal%20or%20jewellery%20consultation."
+                href="https://wa.me/919833522068?text=Hello%20Valchandson%20Jewellers,%20I%20would%20like%20to%20schedule%20a%20private%20bridal%20or%20jewellery%20consultation."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3.5 bg-[#1C1917] hover:bg-[#25D366] text-white text-xs uppercase tracking-[0.2em] font-semibold transition-colors flex items-center justify-center gap-2 rounded shadow-sm"
@@ -190,7 +200,7 @@ export default function ContactPage() {
                   required
                   value={inquiryForm.phone}
                   onChange={(e) => setInquiryForm({ ...inquiryForm, phone: e.target.value })}
-                  placeholder="+91 98290 12345"
+                  placeholder="+91 98335 22819"
                   className="w-full px-3.5 py-2.5 bg-[#FAF8F5] border border-[#E8E2D8] rounded focus:outline-none focus:border-[#A68A5D]"
                 />
               </div>
