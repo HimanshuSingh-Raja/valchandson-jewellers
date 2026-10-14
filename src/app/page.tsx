@@ -27,9 +27,17 @@ const InstagramIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 export default function HomePage() {
   const [activeNewArrivalTab, setActiveNewArrivalTab] = useState<"all" | "silver" | "gold">("all");
   const [brandStoryVideoError, setBrandStoryVideoError] = useState(false);
-
-  const bestSellers = PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
-
+  // Curated 4 Iconic Best Sellers representing the 4 core atelier categories in order:
+  // 1. Ring (Fortress of Aurora Solitaire)
+  // 2. Earrings (Celestial Cascade Drops)
+  // 3. Necklace (Maharani Polki Medallion)
+  // 4. Bracelet (Serpentine Sculpted Cuff)
+  const bestSellers = [
+    PRODUCTS.find((p) => p.id === "vj-ring-01"),
+    PRODUCTS.find((p) => p.id === "vj-ear-01"),
+    PRODUCTS.find((p) => p.id === "vj-neck-02"),
+    PRODUCTS.find((p) => p.id === "vj-brac-01"),
+  ].filter(Boolean) as Product[];
   const newArrivals = PRODUCTS.filter((p) => {
     if (activeNewArrivalTab === "silver") return p.collection === "silver-collection";
     if (activeNewArrivalTab === "gold") return p.collection === "gold";
