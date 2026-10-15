@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "prisma generate && prisma db push && tsx prisma/seed.ts && next build --webpack",
+    "build": "node scripts/setup-env.js && prisma generate && prisma db push && tsx prisma/seed.ts && next build --webpack",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "postinstall": "prisma generate"
+    "postinstall": "node scripts/setup-env.js && prisma generate"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
